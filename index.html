@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Telegramu</title>
+    <!-- Oficiálne SDK -->
+    <script src="https://telegram.org"></script>
+</head>
+<body style="background: #fff; padding: 20px; text-align: center; font-family: sans-serif;">
+
+    <h2>Telegram Test App v2</h2>
+    <p id="debugStatus">Inicializujem systém...</p>
+    
+    <button id="testBtn" style="padding: 15px 30px; font-size: 18px; background: #2481cc; color: white; border: none; border-radius: 8px; cursor: pointer; display: none;">
+        🚀 POSLAŤ TESTOVACIE DÁTA
+    </button>
+
+    <script>
+        // Počkáme na kompletné načítanie celej stránky a externých skriptov
+        window.addEventListener('load', () => {
+            const statusText = document.getElementById('debugStatus');
+            const button = document.getElementById('testBtn');
+
+            // Kontrola existencie objektu
+            const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+
+            if (tg) {
+                statusText.innerText = "✅ Telegram prostredie úspešne nájdené!";
+                statusText.style.color = "green";
+                button.style.display = "inline-block"; // Zobrazíme tlačidlo až po overení
+                tg.expand();
+            } else {
+                statusText.innerText = "❌ Chyba: window.Telegram.WebApp neexistuje. Ste mimo Telegramu alebo skript zlyhal.";
+                statusText.style.color = "red";
+                button.style.display = "inline-block"; // Zobrazíme ho aj tak pre manuálny test
+            }
+
+            button.addEventListener('click', () => {
+                if (tg) {
+                    tg.sendData("TEST_OK_VERZIA_2");
+                    tg.close();
+                } else {
+                    alert("Klikli ste, ale Telegram objekt stále nie je dostupný.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
