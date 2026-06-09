@@ -1,32 +1,57 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Zatvorenia</title>
-    <!-- Použijeme oficiálne nemodifikované SDK zo serverov Telegramu -->
-    <script src="https://telegram.org"></script>
+  <meta charset="UTF-8">
+  <title>Telegram formulár</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body style="background: #ffffff; padding: 30px; text-align: center; font-family: sans-serif;">
+<body>
+  <h3>Formulár</h3>
 
-    <h2>Testovacia aplikácia</h2>
-    <p>Skúšame iba čisté natívne zatvorenie okna.</p>
-    
-    <button id="closeBtn" style="padding: 20px 40px; font-size: 20px; background: #ff3b30; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">
-        ❌ ZAVRIEŤ OKNO
-    </button>
-    <script>
-        // Inicializácia Telegram prostredia
-        const tg = window.Telegram.WebApp;
-        
-        // Oficiálny štart aplikácie
-        tg.ready();
-        tg.expand();
+  <label>Combo 1</label><br>
+  <select id="combo1">
+    <option value="A">A</option>
+    <option value="B">B</option>
+  </select>
 
-        // Ak používateľ klikne na tlačidlo, natívne povieme Telegramu, aby WebView zatvoril
-        document.getElementById('closeBtn').addEventListener('click', () => {
-            tg.close();
-        });
-    </script>
+  <br><br>
+
+  <label>Combo 2</label><br>
+  <select id="combo2">
+    <option value="X">X</option>
+    <option value="Y">Y</option>
+  </select>
+
+  <br><br>
+
+  <label>Dátum/čas od</label><br>
+  <input type="datetime-local" id="dt1">
+
+  <br><br>
+
+  <label>Dátum/čas do</label><br>
+  <input type="datetime-local" id="dt2">
+
+  <br><br>
+
+  <button onclick="odoslat()">Odoslať</button>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+
+    function odoslat() {
+      const data = {
+        combo1: document.getElementById("combo1").value,
+        combo2: document.getElementById("combo2").value,
+        dateTime1: document.getElementById("dt1").value,
+        dateTime2: document.getElementById("dt2").value,
+        sentAt: new Date().toISOString()
+      };
+
+      tg.sendData(JSON.stringify(data));
+      tg.close();
+    }
+  </script>
 </body>
 </html>
