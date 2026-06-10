@@ -259,7 +259,7 @@
         document.getElementById('appForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const formattedAt = formatToSlovakDateTime(document.getElementById('dateTimeFrom').value);
+            const formattedAt = formatToSlovakDateTime(document.getElementById('dateTimeAt').value);
 
             const formData = {
                 action: "new_measurement_log",
