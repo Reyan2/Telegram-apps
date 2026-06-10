@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zadanie merania</title>
+    <title>Zadanie nového pravidla</title>
     <!-- Najnovšia verzia oficiálneho Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -99,10 +99,60 @@
             <label for="station">Stanica</label>
             <div class="input-container">
                 <select id="station" required>
-                    <option value="" disabled selected>Vyberte stanicu...</option>
-                    <option value="Bratislava" data-lat="48.1486" data-lon="17.1077">Stanica Bratislava</option>
-                    <option value="Kosice" data-lat="48.7164" data-lon="21.2611">Stanica Košice</option>
-                    <option value="Zilina" data-lat="49.2232" data-lon="18.7408">Stanica Žilina</option>
+                    <option value="" disabled selected>Vyberte stanicu ...</option>
+                        <option value="0007, 99114, Bratislava, Kamenné nám." data-lon="17.113611" data-lat="48.144721"</option>
+                        <option value="0006, 99112, Bratislava, Trnavské Mýto" data-lon="17.128888" data-lat="48.158333"</option>
+                        <option value="0001, 11813, Bratislava, Jeséniova" data-lon="17.106111" data-lat="48.168054"</option>
+                        <option value="0005, 99111, Bratislava, Mamateyova" data-lon="17.125277" data-lat="48.124721"</option>
+                        <option value="0054, 99117, Bratislava, Púchovská" data-lon="17.270277" data-lat="48.365833"</option>
+                        <option value="0061, 99801, Rovinka, mobilná AMS" data-lon="17.230554" data-lat="48.099721"</option>
+                        <option value="0056, 99133, Pezinok, Obrancov mieru" data-lon="17.259722" data-lat="48.283333"</option>
+                        <option value="0011, 99143, Rohožník, Senická" data-lon="17,171871" data-lat="48,457073"</option>
+                        <option value="0055, 99141, Senec, Boldocká" data-lon="18.000000" data-lat="48.000000"</option>
+                        <option value="0012, 99134, Nitra, Janíkovce" data-lon="18.140833" data-lat="48.283054"</option>
+                        <option value="0013, 99135, Nitra, Štúrova" data-lon="18.076943" data-lat="48.309444"</option>
+                        <option value="0045, 99136, Komárno, Vnútorná okružná" data-lon="18.240277" data-lat="48.278054"</option>
+                        <option value="0048, 99137, Pláštovce" data-lon="19.639443" data-lat="48.276944"</option>
+                        <option value="0035, 99401, Topolníky, Aszód, EMEP" data-lon="17.860277" data-lat="47.959444"</option>
+                        <option value="0008, 99122, Senica, Hviezdoslavova" data-lon="17.363055" data-lat="48.680832"</option>
+                        <option value="0009, 99123, Trnava, Kollárova" data-lon="17.584999" data-lat="48.371388"</option>
+                        <option value="0047, 99138, Sered, Vinárska" data-lon="17.735277" data-lat="48.283610"</option>
+                        <option value="0010, 99128, Trencín, Hasicská" data-lon="18.041388" data-lat="48.896388"</option>
+                        <option value="0049, 99248, Púchov, 1. mája" data-lon="18.546944" data-lat="49.208055"</option>
+                        <option value="0018, 99242, Bystricany, Rozvodna SSE" data-lon="18.514166" data-lat="48.666943"</option>
+                        <option value="0019, 99243, Handlová, Morovnianska" data-lon="18.756388" data-lat="48.733054"</option>
+                        <option value="0020, 99246, Prievidza, Malonecpalská" data-lon="18.628054" data-lat="48.782777"</option>
+                        <option value="0050, 99219, Žarnovica, Dolná" data-lon="19.204444" data-lat="48.523332"</option>
+                        <option value="0017, 99235, Žiar nad Hronom, Jilemnického" data-lon="18.842777" data-lat="48.599721"</option>
+                        <option value="0023, 99262, Zvolen, J. Alexyho" data-lon="19.156944" data-lat="48.558333"</option>
+                        <option value="0014, 99214, Banská Bystrica, Štefánikovo nábr." data-lon="19.155000" data-lat="48.734999"</option>
+                        <option value="0015, 99215, Banská Bystrica, Zelená" data-lon="19.115277" data-lat="48.733610"</option>
+                        <option value="0057, 99216, Lucenec, Gemerská cesta" data-lon="20.133332" data-lat="48.568055"</option>
+                        <option value="0022, 99261, Hnúšta, Hlavná" data-lon="19.951666" data-lat="48.583888"</option>
+                        <option value="0025, 99281, Jelšava, Jesenského" data-lon="20.240555" data-lat="48.631110"</option>
+                        <option value="0021, 99252, Žilina, Obežná" data-lon="18.771388" data-lat="49.211388"</option>
+                        <option value="0052, 99237, Ošcadnica" data-lon="19.476666" data-lat="49.731388"</option>
+                        <option value="0024, 99271, Martin, Jesenského" data-lon="18.921388" data-lat="49.059722"</option>
+                        <option value="0016, 99224, Ružomberok, Riadok" data-lon="19.302500" data-lat="49.079166"</option>
+                        <option value="0002, 11916, Chopok, EMEP" data-lon="19.589166" data-lat="48.943610"</option>
+                        <option value="0051, 99236, Liptovský Mikuláš, Školská" data-lon="20.040554" data-lat="49.139999"</option>
+                        <option value="0027, 99313, Košice, Dumbierska" data-lon="21.244999" data-lat="48.753333"</option>
+                        <option value="0029, 99316, Košice, Amurská" data-lon="21.285555" data-lat="48.690277"</option>
+                        <option value="0026, 99310, Košice, Štefánikova" data-lon="21.258888" data-lat="48.726388"</option>
+                        <option value="0004, 11958, Kojšovská hola" data-lon="20.987221" data-lat="48.782777"</option>
+                        <option value="0028, 99315, Velká Ida, Letná" data-lon="21.175277" data-lat="48.592221"</option>
+                        <option value="0033, 99352, Strážske, Mierová" data-lon="21.837499" data-lat="48.874166"</option>
+                        <option value="0044, 99326, Trebišov, T. G. Masaryka" data-lon="22.191944" data-lat="49.056388"</option>
+                        <option value="0031, 99334, Krompachy, SNP" data-lon="20.873888" data-lat="48.915555"</option>
+                        <option value="0053, 99324, Poprad, Železnicná" data-lon="20.482499" data-lat="49.103888"</option>
+                        <option value="0037, 99404, Stará Lesná, AÚ SAV, EMEP" data-lon="20.289444" data-lat="49.151388"</option>
+                        <option value="0003, 11952, Gánovce, Meteo. st." data-lon="20.322777" data-lat="49.034721"</option>
+                        <option value="0030, 99323, Prešov, Arm. gen. L. Svobodu" data-lon="21.266666" data-lat="48.992499"</option>
+                        <option value="0032, 99351, Humenné, Nám. slobody" data-lon="21.913888" data-lat="48.930832"</option>
+                        <option value="0036, 99403, Starina, Vodná nádrž, EMEP" data-lon="22.260000" data-lat="49.042777"</option>
+                        <option value="0038, 99406, Kolonické sedlo" data-lon="22.273888" data-lat="48.934999"</option>
+                        <option value="0034, 99353, Vranov n/Toplou, M. R. Štefánika" data-lon="21.687499" data-lat="48.886388"</option>
+                        <option value="0046, 99325, Bardejov, Pod Vinbargom" data-lon="21.277221" data-lat="48.300000"</option>
                 </select>
                 <button type="button" class="btn-action" id="btnLocation">📍 Poloha</button>
             </div>
@@ -110,9 +160,10 @@
         </div>
 
         <div class="form-group">
-            <label for="substance">Látka</label>
+            <label for="Látka">Látka</label>
             <select id="substance" required>
                 <option value="" disabled selected>Vyberte látku...</option>
+                <option value="all">celá stanica</option>
                 <option value="CO2">Oxid uhličitý (CO2)</option>
                 <option value="NO2">Oxid dusičitý (NO2)</option>
                 <option value="O3">Ozón (O3)</option>
