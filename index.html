@@ -234,23 +234,61 @@
             return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
         }
 
-        document.getElementById('btnLocation').addEventListener('click', () => {
-            const status = document.getElementById('locationStatus');
-            if (!navigator.geolocation) { status.innerText = "GPS nie je podporované."; return; }
-            status.innerText = "Hľadám polohu...";
-            
-            navigator.geolocation.getCurrentPosition((pos) => {
-                const uLat = pos.coords.latitude; const uLon = pos.coords.longitude;
-                const select = document.getElementById('station');
-                let closest = ""; let minD = Infinity;
-                for (let i = 0; i < select.options.length; i++) {
-                    const opt = select.options[i]; if (opt.value === "") continue;
-                    const d = getDistance(uLat, uLon, parseFloat(opt.getAttribute('data-lat')), parseFloat(opt.getAttribute('data-lon')));
-                    if (d < minD) { minD = d; closest = opt.value; }
+document.getElementById('btnLocation').addEventListener('click', () => {
+    const status = document.getElementById('locationStatus');
+
+    if (!navigator.geolocation) {
+        status.innerText = "GPS nie je podporované v tomto prehliadači.";
+        return;
+    }
+
+    status.innerText = "Hľadám polohu...";
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            const uLat = pos.coords.latitude;
+            const uLon = pos.coords.longitude;
+
+            const select = document.getElementById('station');
+            let closest = "";
+            let minD = Infinity;
+
+            for (let i = 0; i < select.options.length; i++) {
+                const opt = select.options[i];
+                if (opt.value === "") continue;
+
+                const lat = parseFloat(opt.getAttribute('data-lat'));
+                const lon = parseFloat(opt.getAttribute('data-lon'));
+
+                const d = getDistance(uLat, uLon, lat, lon);
+
+                if (d < minD) {
+                    minD = d;
+                    closest = opt.value;
                 }
-                if (closest) { select.value = closest; status.innerText = `Nastavené (vzdialenosť ${minD.toFixed(1)} km).`; }
-            }, () => { status.innerText = "Chyba GPS."; }, { enableHighAccuracy: true, timeout: 5000 });
-        });
+            }
+
+            if (closest) {
+                select.value = closest;
+                status.innerText = `Nastavené podľa GPS, vzdialenosť ${minD.toFixed(1)} km.`;
+            }
+        },
+        (err) => {
+            let msg = "Chyba GPS.";
+
+            if (err.code === 1) msg = "Poloha bola zamietnutá. Povoľ polohu pre Telegram.";
+            if (err.code === 2) msg = "Poloha nie je dostupná. Skús zapnúť GPS.";
+            if (err.code === 3) msg = "Vypršal čas hľadania polohy. Skús znova.";
+
+            status.innerText = `${msg} Kód chyby: ${err.code}`;
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+        }
+    );
+});
 
         document.getElementById('btnCancel').addEventListener('click', () => { 
             tg.close(); // Natívne zatvorenie okna v aplikácii Telegram
