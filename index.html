@@ -177,18 +177,10 @@
         </div>
 
         <div class="form-group">
-            <label for="dateTimeFrom">Dátum a čas OD</label>
+            <label for="dateTimeAt">Dátum a čas</label>
             <div class="input-container">
-                <input type="datetime-local" id="dateTimeFrom" required>
-                <button type="button" class="btn-action btn-now" data-target="dateTimeFrom">Teraz</button>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="dateTimeTo">Dátum a čas DO</label>
-            <div class="input-container">
-                <input type="datetime-local" id="dateTimeTo" required>
-                <button type="button" class="btn-action btn-now" data-target="dateTimeTo">Teraz</button>
+                <input type="datetime-local" id="dateTimeAt" required>
+                <button type="button" class="btn-action btn-now" data-target="dateTimeAt">Teraz</button>
             </div>
         </div>
 
@@ -224,7 +216,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('dateTimeFrom').value = getLocalDateTimeString();
+            document.getElementById('dateTimeAt').value = getLocalDateTimeString();
         });
 
         document.querySelectorAll('.btn-now').forEach(button => {
@@ -267,15 +259,13 @@
         document.getElementById('appForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const formattedFrom = formatToSlovakDateTime(document.getElementById('dateTimeFrom').value);
-            const formattedTo = formatToSlovakDateTime(document.getElementById('dateTimeTo').value);
+            const formattedAt = formatToSlovakDateTime(document.getElementById('dateTimeFrom').value);
 
             const formData = {
                 action: "new_measurement_log",
                 station: document.getElementById('station').value,
                 substance: document.getElementById('substance').value,
-                time_from: formattedFrom,
-                time_to: formattedTo,
+                time_at: formattedAt,
                 note: document.getElementById('note').value
             };
 
