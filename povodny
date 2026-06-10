@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie merania</title>
+    <!-- Najnovšia verzia oficiálneho Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --tg-theme-bg-color: #ffffff;
+            --tg-theme-text-color: #000000;
+            --tg-theme-button-color: #2481cc;
+            --tg-theme-button-text-color: #ffffff;
+            --tg-theme-hint-color: #999999;
+            --tg-theme-secondary-bg-color: #efeff4;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--tg-theme-bg-color);
+            color: var(--tg-theme-text-color);
+            margin: 0;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .input-container {
+            display: flex;
+            gap: 8px;
+        }
+        input, select, textarea {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--tg-theme-hint-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: var(--tg-theme-bg-color);
+            color: var(--tg-theme-text-color);
+        }
+        textarea {
+            width: 100%;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--tg-theme-button-color);
+        }
+        .btn-action {
+            background-color: var(--tg-theme-secondary-bg-color);
+            color: var(--tg-theme-button-color);
+            border: 1px solid var(--tg-theme-button-color);
+            border-radius: 8px;
+            padding: 0 12px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .btn-main {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .btn-submit {
+            background-color: var(--tg-theme-button-color);
+            color: var(--tg-theme-button-text-color);
+        }
+        .btn-cancel {
+            background-color: #e5e5ea;
+            color: #ff3b30;
+        }
+        .status-msg {
+            font-size: 12px;
+            color: var(--tg-theme-hint-color);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="appForm">
+        <div class="form-group">
+            <label for="station">Stanica</label>
+            <div class="input-container">
+                <select id="station" required>
+                    <option value="" disabled selected>Vyberte stanicu...</option>
+                    <option value="Bratislava" data-lat="48.1486" data-lon="17.1077">Stanica Bratislava</option>
+                    <option value="Kosice" data-lat="48.7164" data-lon="21.2611">Stanica Košice</option>
+                    <option value="Zilina" data-lat="49.2232" data-lon="18.7408">Stanica Žilina</option>
+                </select>
+                <button type="button" class="btn-action" id="btnLocation">📍 Poloha</button>
+            </div>
+            <div id="locationStatus" class="status-msg"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="substance">Látka</label>
+            <select id="substance" required>
+                <option value="" disabled selected>Vyberte látku...</option>
+                <option value="CO2">Oxid uhličitý (CO2)</option>
+                <option value="NO2">Oxid dusičitý (NO2)</option>
+                <option value="O3">Ozón (O3)</option>
+                <option value="PM10">Prachové častice (PM10)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dateTimeFrom">Dátum a čas OD</label>
+            <div class="input-container">
+                <input type="datetime-local" id="dateTimeFrom" required>
+                <button type="button" class="btn-action btn-now" data-target="dateTimeFrom">Teraz</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dateTimeTo">Dátum a čas DO</label>
+            <div class="input-container">
+                <input type="datetime-local" id="dateTimeTo" required>
+                <button type="button" class="btn-action btn-now" data-target="dateTimeTo">Teraz</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="note">Poznámka</label>
+            <textarea id="note" rows="3" placeholder="Zadajte poznámku..."></textarea>
+        </div>
+
+        <div class="button-group">
+            <button type="button" class="btn-main btn-cancel" id="btnCancel">Zrušiť</button>
+            <button type="submit" class="btn-main btn-submit">Odoslať</button>
+        </div>
+    </form>
+    <script>
+        // Inicializácia a prepojenie s Telegram klientom
+        const tg = window.Telegram.WebApp;
+        
+        // Informuje Telegram, že Mini App je plne načítaná a pripravená
+        tg.ready(); 
+        tg.expand(); // Roztiahne okno na celú výšku displeja
+
+        function getLocalDateTimeString() {
+            const now = new Date();
+            const tzOffset = now.getTimezoneOffset() * 60000;
+            return (new Date(now - tzOffset)).toISOString().slice(0, 16);
+        }
+
+        function formatToSlovakDateTime(isoString) {
+            if (!isoString) return "";
+            const [datePart, timePart] = isoString.split('T');
+            const [year, month, day] = datePart.split('-');
+            return `${day}.${month}.${year} ${timePart}`;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('dateTimeFrom').value = getLocalDateTimeString();
+        });
+
+        document.querySelectorAll('.btn-now').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const targetId = e.target.getAttribute('data-target');
+                document.getElementById(targetId).value = getLocalDateTimeString();
+            });
+        });
+
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+        }
+
+        document.getElementById('btnLocation').addEventListener('click', () => {
+            const status = document.getElementById('locationStatus');
+            if (!navigator.geolocation) { status.innerText = "GPS nie je podporované."; return; }
+            status.innerText = "Hľadám polohu...";
+            
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const uLat = pos.coords.latitude; const uLon = pos.coords.longitude;
+                const select = document.getElementById('station');
+                let closest = ""; let minD = Infinity;
+                for (let i = 0; i < select.options.length; i++) {
+                    const opt = select.options[i]; if (opt.value === "") continue;
+                    const d = getDistance(uLat, uLon, parseFloat(opt.getAttribute('data-lat')), parseFloat(opt.getAttribute('data-lon')));
+                    if (d < minD) { minD = d; closest = opt.value; }
+                }
+                if (closest) { select.value = closest; status.innerText = `Nastavené (vzdialenosť ${minD.toFixed(1)} km).`; }
+            }, () => { status.innerText = "Chyba GPS."; }, { enableHighAccuracy: true, timeout: 5000 });
+        });
+
+        document.getElementById('btnCancel').addEventListener('click', () => { 
+            tg.close(); // Natívne zatvorenie okna v aplikácii Telegram
+        });
+
+        document.getElementById('appForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formattedFrom = formatToSlovakDateTime(document.getElementById('dateTimeFrom').value);
+            const formattedTo = formatToSlovakDateTime(document.getElementById('dateTimeTo').value);
+
+            const formData = {
+                action: "new_measurement_log",
+                station: document.getElementById('station').value,
+                substance: document.getElementById('substance').value,
+                time_from: formattedFrom,
+                time_to: formattedTo,
+                note: document.getElementById('note').value
+            };
+
+            // Oficiálne odoslanie textového reťazca do getUpdates bota
+            tg.sendData(JSON.stringify(formData));
+            
+            // Po odoslaní Telegram automaticky aplikáciu zatvorí
+            tg.close(); 
+        });
+    </script>
+</body>
+</html>
