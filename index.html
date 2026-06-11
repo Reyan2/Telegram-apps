@@ -300,10 +300,10 @@ document.getElementById('btnLocation').addEventListener('click', () => {
             const formattedAt = formatToSlovakDateTime(document.getElementById('dateTimeAt').value);
 
             const formData = {
-                action: "new_measurement_log",
+                action: "PrevalidOpen",
                 station: document.getElementById('station').value,
                 substance: document.getElementById('substance').value,
-                time_at: formattedAt,
+                dtFrom: formattedAt,
                 note: document.getElementById('note').value
             };
 
