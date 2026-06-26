@@ -171,8 +171,6 @@
             <label for="substance">Látka</label>
             <select id="substance" required>
                 <option value="" disabled selected>Vyberte látku ...</option>
-                <option value="X0001">stanica - klimatizácia</option>
-                <option value="X0002">stanica - elektrina</option>
                 <option value="24001">PM10 (02103/24001)</option>
                 <option value="39001">PM25 (02203/39001)</option>
                 <option value="08017">O3 (02001/08017)</option>
