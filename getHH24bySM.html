@@ -301,7 +301,7 @@ document.getElementById('btnLocation').addEventListener('click', () => {
             const formattedAt = formatToSlovakDateTime(document.getElementById('dateTimeAt').value);
 
             const formData = {
-                action: "GetHourlyData",
+                action: "GetHH24bySM",
                 station: document.getElementById('station').value,
                 substance: document.getElementById('substance').value,
                 dtAt: formattedAt
